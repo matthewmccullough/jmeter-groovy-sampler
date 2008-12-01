@@ -44,8 +44,6 @@ public class GroovyScriptSampler extends AbstractSampler implements TestBean {
         result.sampleStart();
         //Run the groovy script
         try {
-            Thread.sleep(1000 + (new Random().nextInt() % 5000));
-
             //Get the classloader of JMeter, where we have put all the Groovy JARs
             ClassLoader parent = getClass().getClassLoader();
             GroovyClassLoader loader = new GroovyClassLoader(parent);
@@ -58,6 +56,7 @@ public class GroovyScriptSampler extends AbstractSampler implements TestBean {
             groovyObject.invokeMethod("run", args);
         }
         catch (Exception ex) {
+			System.out.println("Groovy exception: " + ex.getStackTrace() + ex.toString());
             //Problem encountered, so set the error statuses into the result
             result.setSuccessful(false);
             result.setResponseCode("500"); // $NON-NLS-1$

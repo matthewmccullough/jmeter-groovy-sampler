@@ -4,7 +4,7 @@
 	<groupId>com.ambientideas.jmeter</groupId>
 	<artifactId>jmeter-groovy-sampler</artifactId>
 	<packaging>jar</packaging>
-	<version>0.9</version>
+	<version>0.9.1</version>
 	<name>jmeter-groovy-sampler</name>
 	<url>http://code.google.com/p/jmeter-groovy-sampler/</url>
 	<dependencies>
@@ -84,4 +84,17 @@
 			<version>1.5.7</version>
 		</dependency>
 	</dependencies>
+	
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.5</source>
+					<target>1.5</target>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 </project>
