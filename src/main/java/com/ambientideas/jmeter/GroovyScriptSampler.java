@@ -4,7 +4,8 @@ import groovy.lang.GroovyClassLoader;
 import groovy.lang.GroovyObject;
 
 import java.io.File;
-import java.util.Random;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 
 import org.apache.jmeter.samplers.AbstractSampler;
 import org.apache.jmeter.samplers.Entry;
@@ -56,16 +57,27 @@ public class GroovyScriptSampler extends AbstractSampler implements TestBean {
             groovyObject.invokeMethod("run", args);
         }
         catch (Exception ex) {
-			System.out.println("Groovy exception: " + ex.getStackTrace() + ex.toString());
+			String stackTrace = buildStackTraceString(ex);
+			System.out.println("Groovy exception: " + stackTrace);
             //Problem encountered, so set the error statuses into the result
             result.setSuccessful(false);
             result.setResponseCode("500"); // $NON-NLS-1$
-            result.setResponseMessage(ex.toString());
+            result.setResponseMessage(stackTrace);
         }
         finally {
             result.sampleEnd();
         }
 
         return result;
+    }
+
+    public static String buildStackTraceString(Throwable t)
+    {
+        StringWriter sw = new StringWriter();
+        PrintWriter pw = new PrintWriter(sw, true);
+        t.printStackTrace(pw);
+        pw.flush();
+        sw.flush();
+        return sw.toString();
     }
 }
