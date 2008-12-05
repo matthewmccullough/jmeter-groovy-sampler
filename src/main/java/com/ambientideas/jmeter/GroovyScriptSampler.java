@@ -20,19 +20,29 @@ import org.apache.jmeter.testbeans.TestBean;
  */
 public class GroovyScriptSampler extends AbstractSampler implements TestBean {
 
-    private static final String FILENAME = "GroovyScriptSampler.filename"; //$NON-NLS-1$
+    private static final String SETUPSCRIPTFILENAME = "GroovyScriptSampler.setupScriptFilename"; //$NON-NLS-1$
+	private static final String PRIMARYSCRIPTFILENAME = "GroovyScriptSampler.primaryScriptFilename"; //$NON-NLS-1$
 
-    public String getFilename() {
-        return getPropertyAsString(FILENAME);
+    public String getSetupScriptFilename() {
+        return getPropertyAsString(SETUPSCRIPTFILENAME);
     }
 
-    public void setFilename(String newFilename) {
-        this.setProperty(FILENAME, newFilename);
+    public void setSetupScriptFilename(String newSetupScriptFilename) {
+        this.setProperty(SETUPSCRIPTFILENAME, newSetupScriptFilename);
+    }
+
+	public String getPrimaryScriptFilename() {
+        return getPropertyAsString(PRIMARYSCRIPTFILENAME);
+    }
+
+    public void setPrimaryScriptFilename(String newPrimaryScriptFilename) {
+        this.setProperty(PRIMARYSCRIPTFILENAME, newPrimaryScriptFilename);
     }
 
     public SampleResult sample(Entry e) {
         final String label = getName();
-        final String fileName = getFilename();
+		final String setupScriptFilename = getSetupScriptFilename();
+        final String primaryScriptFilename = getPrimaryScriptFilename();
 
         SampleResult result = new SampleResult();
         result.setSampleLabel(label);
@@ -42,19 +52,18 @@ public class GroovyScriptSampler extends AbstractSampler implements TestBean {
         result.setSuccessful(true);
         result.setDataType(SampleResult.TEXT);
 
-        result.sampleStart();
         //Run the groovy script
         try {
             //Get the classloader of JMeter, where we have put all the Groovy JARs
             ClassLoader parent = getClass().getClassLoader();
             GroovyClassLoader loader = new GroovyClassLoader(parent);
-            System.out.println("Sampler loading groovy file: " + fileName);
-            Class<?> groovyClass = loader.parseClass(new File(fileName));
 
-            // let's call some method on an instance
-            GroovyObject groovyObject = (GroovyObject) groovyClass.newInstance();
-            Object[] args = {};
-            groovyObject.invokeMethod("run", args);
+			//Call the setup groovy script (not timed) first
+			runGroovyScript(loader, setupScriptFilename);
+			//Start the timing
+			result.sampleStart();
+			//Run the core script
+            runGroovyScript(loader, primaryScriptFilename);
         }
         catch (Exception ex) {
 			String stackTrace = buildStackTraceString(ex);
@@ -71,6 +80,16 @@ public class GroovyScriptSampler extends AbstractSampler implements TestBean {
         return result;
     }
 
+	public static void runGroovyScript(GroovyClassLoader loader, String scriptFilename) throws Exception {
+		System.out.println("Sampler loading groovy file: " + scriptFilename);
+        Class<?> groovyClass = loader.parseClass(new File(scriptFilename));
+
+        //Call the "run" method on an instance
+        GroovyObject groovyObject = (GroovyObject) groovyClass.newInstance();
+        Object[] args = {};
+        groovyObject.invokeMethod("run", args);
+	}
+	
     public static String buildStackTraceString(Throwable t)
     {
         StringWriter sw = new StringWriter();

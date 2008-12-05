@@ -1,7 +1,6 @@
 package com.ambientideas.jmeter;
 
 import org.apache.jmeter.testbeans.BeanInfoSupport;
-
 import java.beans.PropertyDescriptor;
 
 /**
@@ -14,10 +13,15 @@ public class GroovyScriptSamplerBeanInfo extends BeanInfoSupport {
     public GroovyScriptSamplerBeanInfo() {
         super(GroovyScriptSampler.class);
 
-        createPropertyGroup("groovy_script", new String[]{"filename"});
-        PropertyDescriptor p = property("filename");
-        p.setValue(NOT_UNDEFINED, Boolean.TRUE);
-        p.setValue(DEFAULT, "yourscriptnamegoeshere.groovy");
-        p.setValue(NOT_EXPRESSION, Boolean.TRUE);
+        createPropertyGroup("groovy_script", new String[]{"setupScriptFilename", "primaryScriptFilename"});
+        PropertyDescriptor ssf = property("setupScriptFilename");
+        ssf.setValue(NOT_UNDEFINED, Boolean.TRUE);
+        ssf.setValue(DEFAULT, "youroptionalsetupscriptnamegoeshere.groovy");
+        ssf.setValue(NOT_EXPRESSION, Boolean.TRUE);
+
+		PropertyDescriptor psf = property("primaryScriptFilename");
+        psf.setValue(NOT_UNDEFINED, Boolean.TRUE);
+        psf.setValue(DEFAULT, "yourprimaryscriptnamegoeshere.groovy");
+        psf.setValue(NOT_EXPRESSION, Boolean.TRUE);
     }
 }
