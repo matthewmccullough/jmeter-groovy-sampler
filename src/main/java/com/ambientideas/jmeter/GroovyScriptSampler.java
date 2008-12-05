@@ -58,8 +58,11 @@ public class GroovyScriptSampler extends AbstractSampler implements TestBean {
             ClassLoader parent = getClass().getClassLoader();
             GroovyClassLoader loader = new GroovyClassLoader(parent);
 
-			//Call the setup groovy script (not timed) first
-			runGroovyScript(loader, setupScriptFilename);
+			//Call the setup groovy script (not timed) first, if it exists
+			if (setupScriptFilename != null && setupScriptFilename.length() > 0) {
+				runGroovyScript(loader, setupScriptFilename);
+			}
+			
 			//Start the timing
 			result.sampleStart();
 			//Run the core script
