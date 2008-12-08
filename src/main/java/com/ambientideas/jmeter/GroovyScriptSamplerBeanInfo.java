@@ -1,6 +1,7 @@
 package com.ambientideas.jmeter;
 
 import org.apache.jmeter.testbeans.BeanInfoSupport;
+import org.apache.jmeter.testbeans.gui.FileEditor;
 import java.beans.PropertyDescriptor;
 
 /**
@@ -15,19 +16,22 @@ public class GroovyScriptSamplerBeanInfo extends BeanInfoSupport {
 
         createPropertyGroup("groovy_script", new String[]{"utilityScriptFilename", "setupScriptFilename", "primaryScriptFilename"});
 
-		PropertyDescriptor usf = property("utilityScriptFilename");
-        usf.setValue(NOT_UNDEFINED, Boolean.TRUE);
-        usf.setValue(DEFAULT, "yourutilityscriptnamegoeshere.groovy");
-        usf.setValue(NOT_EXPRESSION, Boolean.TRUE);
+		PropertyDescriptor p = property("utilityScriptFilename");
+        p.setValue(NOT_UNDEFINED, Boolean.TRUE);
+        p.setValue(DEFAULT, "yourutilityscriptnamegoeshere.groovy");
+        p.setValue(NOT_EXPRESSION, Boolean.TRUE);
+        p.setPropertyEditorClass(FileEditor.class);
 
-        PropertyDescriptor ssf = property("setupScriptFilename");
-        ssf.setValue(NOT_UNDEFINED, Boolean.TRUE);
-        ssf.setValue(DEFAULT, "youroptionalsetupscriptnamegoeshere.groovy");
-        ssf.setValue(NOT_EXPRESSION, Boolean.TRUE);
+        p = property("setupScriptFilename");
+        p.setValue(NOT_UNDEFINED, Boolean.TRUE);
+        p.setValue(DEFAULT, "youroptionalsetupscriptnamegoeshere.groovy");
+        p.setValue(NOT_EXPRESSION, Boolean.TRUE);
+        p.setPropertyEditorClass(FileEditor.class);
 
-		PropertyDescriptor psf = property("primaryScriptFilename");
-        psf.setValue(NOT_UNDEFINED, Boolean.TRUE);
-        psf.setValue(DEFAULT, "yourprimaryscriptnamegoeshere.groovy");
-        psf.setValue(NOT_EXPRESSION, Boolean.TRUE);
+        p = property("primaryScriptFilename");
+        p.setValue(NOT_UNDEFINED, Boolean.TRUE);
+        p.setValue(DEFAULT, "yourprimaryscriptnamegoeshere.groovy");
+        p.setValue(NOT_EXPRESSION, Boolean.TRUE);
+        p.setPropertyEditorClass(FileEditor.class);
     }
 }
