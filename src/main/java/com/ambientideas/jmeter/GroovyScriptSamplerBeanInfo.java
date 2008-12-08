@@ -13,7 +13,13 @@ public class GroovyScriptSamplerBeanInfo extends BeanInfoSupport {
     public GroovyScriptSamplerBeanInfo() {
         super(GroovyScriptSampler.class);
 
-        createPropertyGroup("groovy_script", new String[]{"setupScriptFilename", "primaryScriptFilename"});
+        createPropertyGroup("groovy_script", new String[]{"utilityScriptFilename", "setupScriptFilename", "primaryScriptFilename"});
+
+		PropertyDescriptor usf = property("utilityScriptFilename");
+        usf.setValue(NOT_UNDEFINED, Boolean.TRUE);
+        usf.setValue(DEFAULT, "yourutilityscriptnamegoeshere.groovy");
+        usf.setValue(NOT_EXPRESSION, Boolean.TRUE);
+
         PropertyDescriptor ssf = property("setupScriptFilename");
         ssf.setValue(NOT_UNDEFINED, Boolean.TRUE);
         ssf.setValue(DEFAULT, "youroptionalsetupscriptnamegoeshere.groovy");

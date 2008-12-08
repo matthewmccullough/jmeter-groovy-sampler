@@ -20,8 +20,17 @@ import org.apache.jmeter.testbeans.TestBean;
  */
 public class GroovyScriptSampler extends AbstractSampler implements TestBean {
 
-    private static final String SETUPSCRIPTFILENAME = "GroovyScriptSampler.setupScriptFilename"; //$NON-NLS-1$
+	private static final String UTILITYSCRIPTFILENAME = "GroovyScriptSampler.utilityScriptFilename"; //$NON-NLS-1$    
+	private static final String SETUPSCRIPTFILENAME = "GroovyScriptSampler.setupScriptFilename"; //$NON-NLS-1$
 	private static final String PRIMARYSCRIPTFILENAME = "GroovyScriptSampler.primaryScriptFilename"; //$NON-NLS-1$
+
+	public String getUtilityScriptFilename() {
+        return getPropertyAsString(UTILITYSCRIPTFILENAME);
+    }
+
+    public void setUtilityScriptFilename(String newUtilityScriptFilename) {
+        this.setProperty(UTILITYSCRIPTFILENAME, newUtilityScriptFilename);
+    }
 
     public String getSetupScriptFilename() {
         return getPropertyAsString(SETUPSCRIPTFILENAME);
@@ -41,6 +50,7 @@ public class GroovyScriptSampler extends AbstractSampler implements TestBean {
 
     public SampleResult sample(Entry e) {
         final String label = getName();
+		final String utilityScriptFilename = getUtilityScriptFilename();
 		final String setupScriptFilename = getSetupScriptFilename();
         final String primaryScriptFilename = getPrimaryScriptFilename();
 
@@ -57,6 +67,11 @@ public class GroovyScriptSampler extends AbstractSampler implements TestBean {
             //Get the classloader of JMeter, where we have put all the Groovy JARs
             ClassLoader parent = getClass().getClassLoader();
             GroovyClassLoader loader = new GroovyClassLoader(parent);
+
+			//Call the utility groovy script (not timed) first, if it exists
+			if (utilityScriptFilename != null && utilityScriptFilename.length() > 0) {
+				runGroovyScript(loader, utilityScriptFilename);
+			}
 
 			//Call the setup groovy script (not timed) first, if it exists
 			if (setupScriptFilename != null && setupScriptFilename.length() > 0) {
