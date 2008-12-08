@@ -14,24 +14,27 @@ public class GroovyScriptSamplerBeanInfo extends BeanInfoSupport {
     public GroovyScriptSamplerBeanInfo() {
         super(GroovyScriptSampler.class);
 
-        createPropertyGroup("groovy_script", new String[]{"utilityScriptFilename", "setupScriptFilename", "primaryScriptFilename"});
+        createPropertyGroup("groovy_script_untimed", new String[]{"utilityScriptFilename", "setupScriptFilename"});
 
-		PropertyDescriptor p = property("utilityScriptFilename");
-        p.setValue(NOT_UNDEFINED, Boolean.TRUE);
-        p.setValue(DEFAULT, "yourutilityscriptnamegoeshere.groovy");
-        p.setValue(NOT_EXPRESSION, Boolean.TRUE);
-        p.setPropertyEditorClass(FileEditor.class);
+		PropertyDescriptor usfP = property("utilityScriptFilename");
+        usfP.setValue(NOT_UNDEFINED, Boolean.FALSE);
+        usfP.setValue(DEFAULT, "");
+        usfP.setValue(NOT_EXPRESSION, Boolean.TRUE);
+        usfP.setPropertyEditorClass(FileEditor.class);
 
-        p = property("setupScriptFilename");
-        p.setValue(NOT_UNDEFINED, Boolean.TRUE);
-        p.setValue(DEFAULT, "youroptionalsetupscriptnamegoeshere.groovy");
-        p.setValue(NOT_EXPRESSION, Boolean.TRUE);
-        p.setPropertyEditorClass(FileEditor.class);
+		PropertyDescriptor ssfP = property("setupScriptFilename");
+        ssfP.setValue(NOT_UNDEFINED, Boolean.FALSE);
+        ssfP.setValue(DEFAULT, "");
+        ssfP.setValue(NOT_EXPRESSION, Boolean.TRUE);
+        ssfP.setPropertyEditorClass(FileEditor.class);
 
-        p = property("primaryScriptFilename");
-        p.setValue(NOT_UNDEFINED, Boolean.TRUE);
-        p.setValue(DEFAULT, "yourprimaryscriptnamegoeshere.groovy");
-        p.setValue(NOT_EXPRESSION, Boolean.TRUE);
-        p.setPropertyEditorClass(FileEditor.class);
+
+		createPropertyGroup("groovy_script_timed", new String[]{"primaryScriptFilename"});
+
+        PropertyDescriptor psfP = property("primaryScriptFilename");
+        psfP.setValue(NOT_UNDEFINED, Boolean.TRUE);
+        psfP.setValue(DEFAULT, "yourprimaryscriptnamegoeshere.groovy");
+        psfP.setValue(NOT_EXPRESSION, Boolean.TRUE);
+        psfP.setPropertyEditorClass(FileEditor.class);
     }
 }
