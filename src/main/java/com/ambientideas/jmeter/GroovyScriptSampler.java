@@ -83,7 +83,7 @@ public class GroovyScriptSampler extends AbstractSampler implements TestBean {
 			//Run the core script
             runGroovyScript(loader, primaryScriptFilename);
         }
-        catch (Exception ex) {
+        catch (Throwable ex) {
 			String stackTrace = buildStackTraceString(ex);
 			System.out.println("Groovy exception: " + stackTrace);
             //Problem encountered, so set the error statuses into the result
