@@ -95,6 +95,30 @@
 					<target>1.5</target>
 				</configuration>
 			</plugin>
+			
+			<!-- Use the enforcer plugin to verify the existence of the JMETER_HOME environment variable -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-enforcer-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>enforce-jmeter_home</id>
+						<goals>
+							<goal>enforce</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<rules>
+						<requireProperty>
+							<property>env.JMETER_HOMEE</property>
+							<message>****** You must specify either JMETER_HOME in your system environment variables.
+                Use mvn help:system to verify its existence *****
+							</message>
+						</requireProperty>
+					</rules>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
 </project>
