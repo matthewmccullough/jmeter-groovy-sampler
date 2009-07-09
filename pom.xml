@@ -112,7 +112,7 @@
 					<rules>
 						<requireProperty>
 							<property>env.JMETER_HOME</property>
-							<message>****** You must specify either JMETER_HOME in your system environment variables.
+							<message>****** You must specify JMETER_HOME in your system environment variables.
                 Use mvn help:system to verify its existence *****
 							</message>
 						</requireProperty>
